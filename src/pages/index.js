@@ -25,7 +25,7 @@ class IndexPage extends Component {
   render() {
     return (
       <Layout>
-        <SEO title={this.state.data ? netNames[this.state.data.net] + " " + typeNames[this.state.data.type] : ""} />
+        <SEO title={this.state.valid ? netNames[this.state.data.net] + " " + typeNames[this.state.data.type] : "Invalid"} />
         <h1>Ethereum Explorer List</h1>
         {!this.state.valid ? (
           <h1>Invalid</h1>
