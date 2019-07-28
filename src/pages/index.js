@@ -1,21 +1,40 @@
 import React from "react"
-import { Link } from "gatsby"
+import { Component } from "react"
 
 import Layout from "../components/layout"
-import Image from "../components/image"
 import SEO from "../components/seo"
+import Link from "../components/link"
 
-const IndexPage = () => (
-  <Layout>
-    <SEO title="Home" />
-    <h1>Hi people</h1>
-    <p>Welcome to your new Gatsby site.</p>
-    <p>Now go build something great.</p>
-    <div style={{ maxWidth: `300px`, marginBottom: `1.45rem` }}>
-      <Image />
-    </div>
-    <Link to="/page-2/">Go to page 2</Link>
-  </Layout>
-)
+import { validTypes, supportedExplorers } from "../helpers/constants";
+
+class IndexPage extends Component {
+  componentDidMount() {
+    let split = this.props["*"].split("/")
+    let data = { net: split[0], type: split[1], hash: split[2] }
+    this.setState({ data: data, valid: validTypes.indexOf(data.type) !== -1 })
+  }
+
+  componentWillUnmount() {}
+
+  state = {
+    data: undefined,
+    valid: false,
+  }
+
+  render() {
+    return (
+      <Layout>
+        <SEO title="Home" />
+        {!this.state.valid ? (
+          <h1>Invalid</h1>
+        ) : (
+          Object.keys(supportedExplorers).map((explorer, i) => (
+            <Link name={explorer} buildURL={supportedExplorers[explorer]} data={this.state.data} />
+          ))
+        )}
+      </Layout>
+    )
+  }
+}
 
 export default IndexPage
